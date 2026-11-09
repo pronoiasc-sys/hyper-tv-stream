@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">IA Control</string>
+    <string name="accessibility_desc">Permite que o IA Control leia a tela e execute toques, digitação e rolagem a seu pedido.</string>
+    <style name="AppTheme" parent="Theme.AppCompat.DayNight.NoActionBar" />
+</resources>
