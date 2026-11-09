@@ -23,17 +23,23 @@ jobs:
         with:
           channel: 'stable'
 
-      - name: Install Dependencies
-        run: flutter pub get
-
-      - name: Accept Android Licenses
-        run: yes | flutter doctor --android-licenses
-
-      - name: Build Release APK
-        run: flutter build apk --release --no-pub
+      - name: Find Project Root and Build
+        run: |
+          # Procura automaticamente onde está o pubspec.yaml
+          PROJECT_DIR=$(find . -name "pubspec.yaml" -maxdepth 3 -exec dirname {} \; | head -n 1)
+          echo "Projeto Flutter encontrado em: ./$PROJECT_DIR"
+          cd "$PROJECT_DIR"
+          
+          flutter pub get
+          yes | flutter doctor --android-licenses || true
+          flutter build apk --release --no-pub
+          
+          # Prepara o APK para o upload
+          mkdir -p ../../output_apk
+          cp build/app/outputs/flutter-apk/app-release.apk ../../output_apk/hyper-tv-stream.apk
 
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
         with:
           name: hyper-tv-stream-release
-          path: build/app/outputs/flutter-apk/app-release.apk
+          path: output_apk/hyper-tv-stream.apk
